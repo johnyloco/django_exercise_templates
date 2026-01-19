@@ -1,9 +1,10 @@
 from django.db import models
-from django.utils.text import slugify
+from django.template.defaultfilters import slugify
 
 
 class Book(models.Model):
     # Choices for the genre field
+    objects = None
     GENRE_CHOICES = [
         ('FICTION', 'Fiction'),
         ('NON-FICTION', 'Non-Fiction'),
@@ -25,16 +26,16 @@ class Book(models.Model):
     image_url = models.URLField()
 
     # Slug is unique and generated from the title
-    slug = models.SlugField(max_length=255, unique=True)
+    slug = models.SlugField(max_length=255, unique=True, blank=True,)
 
     # auto_now updates the field every time the object is saved
     updated_at = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
         # Automatically generate slug if it doesn't exist
-        if not self.slug:
-            self.slug = slugify(self.title)
+        if not self.slug and self.title:
+            self.slug = slugify(f"{self.title}")
         super().save(*args, **kwargs)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.title

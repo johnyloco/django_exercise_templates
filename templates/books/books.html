@@ -6,7 +6,21 @@
     <title>Books List</title>
 </head>
 <body>
+<h1>Books list</h1>
 
-        <h1>Books list</h1>
+{% for book in books %}
+    <li>
+        {{ book.title }} - {{ book.price }}
+        {% if book.slug %}
+            <a href="{% url 'book_details' book.slug %}" class="btn-style">
+                View Details
+            </a>
+        {% else %}
+            <span style="color: red;">(Missing Slug)</span>
+        {% endif %}
+    </li>
+{% endfor %}
+
+
 </body>
 </html>

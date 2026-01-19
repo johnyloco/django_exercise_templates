@@ -5,6 +5,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 class Review(models.Model):
     # Link to the Book model.
     # related_name='reviews' allows you to access reviews via book.reviews.all()
+    objects = None
     book = models.ForeignKey(
         'books.Book',
         #Cleanup crew: when a parent record - Book is deleted, the database automatically deletes all child records - Reviews
