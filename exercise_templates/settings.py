@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 PROJECT_APPS = [
     'books',
     'reviews',
+    'common',
 ]
 
 INSTALLED_APPS = [

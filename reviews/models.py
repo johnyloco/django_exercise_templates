@@ -1,11 +1,12 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 
+from common.models import TimeStampModel
 
-class Review(models.Model):
+
+class Review(TimeStampModel):
     # Link to the Book model.
     # related_name='reviews' allows you to access reviews via book.reviews.all()
-    objects = None
     book = models.ForeignKey(
         'books.Book',
         #Cleanup crew: when a parent record - Book is deleted, the database automatically deletes all child records - Reviews
@@ -24,8 +25,5 @@ class Review(models.Model):
         validators=[MinValueValidator(0.0), MaxValueValidator(10.0)]
     )
 
-    # auto_now_add sets the timestamp only when the object is first created
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"Review by {self.author} for {self.book.title}"
+    class Meta:
+        ordering = ['-created_at']

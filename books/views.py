@@ -1,18 +1,41 @@
-from django.http import HttpResponse
+from django.db.models import Avg
+from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render, get_object_or_404
 
 from books.models import Book
 
+def home(request: HttpRequest) -> HttpResponse:
+    total_books = Book.objects.count()
+    latest_book = Book.objects.order_by('-created_at').first()
 
-def books_list(request):
-    all_books = Book.objects.all()
-    return render(request, 'books/books.html', {'books': all_books})
+    context = {
+        'total_books': total_books,
+        'latest_book': latest_book,
+        'page_title': 'Home',
+    }
+    return render(request, 'books/home.html', context)
 
-def book_details(request, slug):
-    book = get_object_or_404(Book, slug=slug)
 
-    context = {"book": "book",
-               "price": "price",
-               "reviews": book.reviews.all()}
+def books_list(request: HttpRequest) -> HttpResponse:
+    all_books = Book.objects.annotate(
+        avg_rating=Avg('reviews__rating')
+    )
 
-    return render(request, 'books/book_details.html', context = {'book': book})
+    context = {
+        'books': all_books,
+        'page_title': 'Books List',
+    }
+    return render(request, 'books/books.html', context)
+
+def book_details(request: HttpRequest, slug: str) -> HttpResponse:
+    book = get_object_or_404(Book.objects.annotate(
+        avg_rating=Avg('reviews__rating')
+    ),
+        slug=slug,
+    )
+
+    context = {"book": book,
+               "page_title": 'Book Details',
+               }
+
+    return render(request, 'books/book_details.html', context)

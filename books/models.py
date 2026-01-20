@@ -1,17 +1,19 @@
 from django.db import models
 from django.template.defaultfilters import slugify
 
+from common.models import TimeStampModel
 
-class Book(models.Model):
-    # Choices for the genre field
-    objects = None
-    GENRE_CHOICES = [
-        ('FICTION', 'Fiction'),
-        ('NON-FICTION', 'Non-Fiction'),
-        ('FANTASY', 'Fantasy'),
-        ('SCIENCE', 'Science'),
-        # Add more genres as needed
-    ]
+
+class Book(TimeStampModel):
+
+    class GenreChoices(models.TextChoices):
+        FICTION = 'Fiction', 'Fiction'
+        NON_FICTION = 'Non-Fiction', 'Non-Fiction'
+        FANTASY = 'Fantasy', 'Fantasy'
+        SCIENCE = 'Science', 'Science'
+        HISTORY = 'History', 'History'
+        MYSTERY = 'Mystery', 'Mystery'
+
 
     title = models.CharField(max_length=255, unique=True)
     price = models.DecimalField(max_digits=6, decimal_places=2)
@@ -20,22 +22,22 @@ class Book(models.Model):
     # Logic for exact length can be added via a Validator.
     isbn = models.CharField(max_length=12, unique=True)
 
-    genre = models.CharField(max_length=20, choices=GENRE_CHOICES)
-    publishing_date = models.DateField()
+    genre = models.CharField(
+        max_length=50,
+        choices=GenreChoices.choices,
+    )
+
     description = models.TextField()
     image_url = models.URLField()
+    publisher = models.CharField(max_length=255)
+
 
     # Slug is unique and generated from the title
     slug = models.SlugField(max_length=255, unique=True, blank=True,)
 
-    # auto_now updates the field every time the object is saved
-    updated_at = models.DateTimeField(auto_now=True)
 
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs) -> None:
         # Automatically generate slug if it doesn't exist
         if not self.slug and self.title:
-            self.slug = slugify(f"{self.title}")
+            self.slug = slugify(f"{self.title}-{self.publisher}")
         super().save(*args, **kwargs)
-
-    def __str__(self) -> str:
-        return self.title

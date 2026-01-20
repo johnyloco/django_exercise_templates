@@ -1,0 +1,9 @@
+{% extends "common/base.html" %}
+{% block title %}Home Page{% endblock %}
+{% block content %}
+    {% include "departments/includes/nav-bar.html" %}
+    {% for dep in departments.items %}
+        <h2>{{ dep.title }}</h2>
+        <p>{{ dep.description }}</p>
+    {% endfor %}
+{% endblock %}
