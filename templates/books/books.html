@@ -19,12 +19,25 @@
             </thead>
             <tbody>
                 {% for book in books %}
+                    <td>
+                        {% if book.image_url %}
+                            <img src="{{ book.image_url }}"
+                                 alt="{{ book.title }}"
+                                 class="rounded shadow-sm"
+                                 style="max-width: 200px; height: auto; display: block;">
+                        {% else %}
+                            <div class="bg-light text-muted d-flex align-items-center justify-content-center rounded"
+                                 style="width: 80px; height: 110px; font-size: 0.8rem; border: 1px dashed #dee2e6;">
+                                No Cover
+                            </div>
+                        {% endif %}
+                    </td>
                 <tr>
                     <td class="fw-bold">{{ book.title }}</td>
                     <td>{{ book.author }}</td>
                     <td>
                         {% if book.avg_rating %}
-                            <span class="text-warning">★</span> {{ book.avg_rating }}
+                            <span class="text-warning">★</span> {{ book.avg_rating|floatformat:2 }}
                         {% else %}
                             <span class="text-muted">No ratings</span>
                         {% endif %}

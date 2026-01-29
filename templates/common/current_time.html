@@ -1,0 +1,26 @@
+<div class="d-flex flex-column align-items-center">
+    <div class="badge rounded-pill bg-dark text-white px-3 py-2 shadow-sm border border-secondary">
+        <span class="text-primary pulse-dot">●</span>
+        <span class="ms-1 fw-light text-uppercase" style="letter-spacing: 1px;">Live System Time</span>
+        <span class="mx-2 text-secondary">|</span>
+        <span id="live-clock" class="fw-bold">{{ current_time|date:"H:i:s" }}</span>
+    </div>
+    <div id="live-date" class="small text-muted mt-1 fw-semibold" style="font-size: 0.75rem;">
+        {{ current_time|date:"l, F jS" }}
+    </div>
+</div>
+
+<style>
+    /* A subtle pulse effect for the dot to make it look "Real Time" */
+    .pulse-dot {
+        animation: pulse-animation 2s infinite;
+    }
+    @keyframes pulse-animation {
+        0% { opacity: 1; }
+        50% { opacity: 0.3; }
+        100% { opacity: 1; }
+    }
+    body {
+        padding-bottom: 100px;
+    }
+</style>
