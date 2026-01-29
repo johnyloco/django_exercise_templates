@@ -1,19 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Books Details</title>
-</head>
-<body>
-        <h1>Book Details</h1>
-        <p>Title: {{ book.title }}</p>
-        <p>Price: {{ book.price }}</p>
-        <p>Genre: {{ book.genre }}</p>
-        <p>Publishing Date: {{ book.publishing_date }}</p>
-        <figure>
-            <img src="{{ book.image_url }}" alt="{{ book.title }}">
-        </figure>
+{% extends 'common/base.html' %}
 
-</body>
-</html>
+{% block content %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'books:home' %}">Home</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'books:books_list' %}">Books</a></li>
+    <li class="breadcrumb-item active">{{ book.title }}</li>
+  </ol>
+</nav>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card shadow-sm mb-4">
+            {% if book.image_url %}
+                <img src="{{ book.image_url }}" class="card-img-top" alt="{{ book.title }}" style="max-height: 400px; object-fit: contain; background-color: #f8f9fa;">
+            {% endif %}
+
+            <div class="card-body">
+                <h1 class="display-4">{{ book.title }}</h1>
+                <p class="lead text-muted">By {{ book.publisher }}</p>
+                <hr>
+                <h5>Description</h5>
+                <p>{{ book.description }}</p>
+            </div>
+            <div class="card-footer bg-transparent">
+                <small class="text-muted">Added on {{ book.created_at }}</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card border-primary mb-4">
+            <div class="card-header bg-primary text-white">
+                Quick Stats
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Average Rating
+                    <span class="badge bg-warning text-dark rounded-pill fs-6">
+                        {% if book.avg_rating %}
+                            ★ {{ book.avg_rating }}
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </span>
+                </li>
+                <li class="list-group-item">
+                    <strong>Slug:</strong> <code>{{ book.slug }}</code>
+                </li>
+            </ul>
+        </div>
+
+        <div class="d-grid gap-2">
+            <a href="{% url 'books:books_list' %}" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,26 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Books List</title>
-</head>
-<body>
+{% extends 'common/base.html' %}
 
-<h1>Reviews list</h1>
+{% block content %}
+<h1 class="mb-4">Community Reviews</h1>
+
+<div class="row row-cols-1 row-cols-md-2 g-4">
     {% for review in reviews %}
-        <li>
-            {{ review.author }} - {{ review.body }} - {{ review.rating }} - {{ book.price }}
-            {% if review.pk %}
-                <a href="{% url 'review_details' review.pk %}" class="btn-style">
-                    View Details
+    <div class="col">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">{{ review.book.title }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">By {{ review.author }}</h6>
+                <p class="card-text">{{ review.content|truncatewords:15 }}</p>
+
+                <a href="{% url 'review_details' review.pk %}" class="btn btn-sm btn-outline-primary">
+                    View Full Review
                 </a>
-            {% else %}
-                <span style="color: red;">(Missing Primary Key)</span>
-            {% endif %}
-
-        </li>
+            </div>
+        </div>
+    </div>
     {% endfor %}
-
-</body>
-</html>
+</div>
+{% endblock %}

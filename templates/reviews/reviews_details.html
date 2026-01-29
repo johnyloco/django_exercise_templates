@@ -1,17 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Title</title>
-</head>
-<body>
-    <h1>Review Details</h1>
-    <p>Author: {{ review.author }}</p>
-    <p>Rating: {{ review.rating }}</p>
-    <p>Created at: {{ review.created_at }}</p>
+{% extends 'common/base.html' %}
 
+{% block content %}
+<div class="container">
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-5">
+            <div class="mb-4">
+                <h1 class="fw-bold">{{ review.author }}'s Thoughts</h1>
+                <p class="lead">On <strong>{{ review.book.title }}</strong></p>
+                <span class="badge bg-warning text-dark fs-6">Rating: {{ review.rating }}/5</span>
+            </div>
 
+            <hr>
 
-</body>
-</html>
+            <div class="mt-4">
+                <p class="fs-5">{{ review.content|linebreaks }}</p>
+            </div>
+
+            <div class="mt-5">
+                <a href="{% url 'reviews' %}" class="btn btn-secondary">
+                    &larr; Back to All Reviews
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
