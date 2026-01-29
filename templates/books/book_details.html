@@ -39,7 +39,7 @@
                     Average Rating
                     <span class="badge bg-warning text-dark rounded-pill fs-6">
                         {% if book.avg_rating %}
-                            ★ {{ book.avg_rating }}
+                            ★ {{ book.avg_rating|floatformat:2 }}
                         {% else %}
                             N/A
                         {% endif %}
