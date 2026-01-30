@@ -1,0 +1,50 @@
+{% extends 'common/base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="card shadow border-0 rounded-3">
+                <div class="card-header bg-dark text-white py-3">
+                    <h3 class="card-title mb-0">
+                        <i class="bi bi-pencil-square me-2"></i>Edit Book Details
+                    </h3>
+                </div>
+
+                <div class="card-body p-4 p-md-5 bg-light">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <div class="row g-3">
+                            {% for field in form %}
+                                <div class="col-12">
+                                    <label class="form-label fw-bold">{{ field.label }}</label>
+                                    {# Django default widgets need Bootstrap classes added in forms.py #}
+                                    {{ field }}
+
+                                    {% if field.help_text %}
+                                        <div class="form-text">{{ field.help_text }}</div>
+                                    {% endif %}
+
+                                    {% for error in field.errors %}
+                                        <div class="text-danger small mt-1">{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="d-flex align-items-center justify-content-between mt-5">
+                            <a href="{% url 'books:books_list' %}" class="text-decoration-none text-muted">
+                                <i class="bi bi-arrow-left"></i> Back to Library
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-lg px-5 shadow-sm">
+                                Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

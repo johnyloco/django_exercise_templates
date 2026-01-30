@@ -35,9 +35,27 @@ class Book(TimeStampModel):
     # Slug is unique and generated from the title
     slug = models.SlugField(max_length=255, unique=True, blank=True,)
 
+    tags = models.ManyToManyField(
+        'Tag',
+        blank=True,
+        null=True,
+    )
+
 
     def save(self, *args, **kwargs) -> None:
         # Automatically generate slug if it doesn't exist
         if not self.slug and self.title:
             self.slug = slugify(f"{self.title}-{self.publisher}")
         super().save(*args, **kwargs)
+
+
+class Tag(models.Model):
+    name = models.CharField(
+        max_length=50
+    )
+    books = models.ManyToManyField(
+        Book,
+    )
+
+    def __str__(self) -> str:
+        return self.name
