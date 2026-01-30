@@ -48,11 +48,16 @@
                 <li class="list-group-item">
                     <strong>Slug:</strong> <code>{{ book.slug }}</code>
                 </li>
+                <li class="list-group-item">
+                    <strong>Tag:</strong> <code>{{ book.tags.all|join:", " }}</code>
+                </li>
             </ul>
         </div>
 
         <div class="d-grid gap-2">
             <a href="{% url 'books:books_list' %}" class="btn btn-secondary">Back to List</a>
+            <a href="{% url 'books:book_edit' book.pk %}" class="btn btn-primary">Edit"</a>
+            <a href="{% url 'books:book_delete' book.pk %}" class="btn btn-danger">Delete</a>
         </div>
     </div>
 </div>

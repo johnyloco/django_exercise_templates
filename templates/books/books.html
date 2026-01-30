@@ -4,6 +4,29 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1>{{ page_title }}</h1>
     <span class="badge bg-secondary">{{ books|length }} Books Total</span>
+    <form method="get" class="mb-4">
+    <div class="input-group shadow-sm">
+        <span class="input-group-text bg-white border-end-0">
+            <i class="bi bi-search text-muted"></i>
+        </span>
+
+        {% if search_form.query %}
+            {{ search_form.query }}
+        {% else %}
+            {{ search_form }}
+        {% endif %}
+
+        <button class="btn btn-primary px-4" type="submit">
+            Search
+        </button>
+
+        {% if request.GET.query %}
+            <a href="{% url 'books:books_list' %}" class="btn btn-outline-secondary">
+                Clear
+            </a>
+        {% endif %}
+    </div>
+    </form>
 </div>
 
 <div class="card shadow-sm">
