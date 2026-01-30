@@ -1,7 +1,8 @@
 from django.db.models import Avg
 from django.http import HttpResponse, HttpRequest
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 
+from books.forms import BookFormBasic
 from books.models import Book
 
 def home(request: HttpRequest) -> HttpResponse:
@@ -39,3 +40,16 @@ def book_details(request: HttpRequest, slug: str) -> HttpResponse:
                }
 
     return render(request, 'books/book_details.html', context)
+
+def book_create(request: HttpRequest) -> HttpResponse:
+    form = BookFormBasic(request.POST or None)
+
+    if request.method == 'POST' and form.is_valid():
+        return redirect ('books:home')
+
+    context = {
+        "form" : form,
+
+    }
+
+    return render(request, 'books/book_create.html', context)
